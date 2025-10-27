@@ -5,45 +5,34 @@
   <base href="/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="Description" content="Demonstration for my-element">
+  <meta name="Description" content="Photo Gallery Project - Random Fox Photo Gallery Demo">
 
   <style>
     :root, html, body {
       margin: var(--ddd-spacing-0);
       padding: var(--ddd-spacing-0);
+      background-color: var(--ddd-theme-default-nittanyNavy);
     }
     #demo {
-      margin: var(--ddd-spacing-2);
+      margin: var(--ddd-spacing-4);
     }
-    my-element {
-      margin: var(--ddd-spacing-2);
-      border: var(--ddd-border-md);
-      border-radius: var(--ddd-radius-lg);
+    photo-gallery-project {
+      display: block;
     }
-    my-element:hover {
-      box-shadow: var(--ddd-boxShadow-sm);
-    }
-    #example {
-      --my-element-font-size: var(--ddd-font-size-l);
-      background-color: var(--ddd-accent-2);
-      color: var(--ddd-primary-17);
+    h1 {
+      color: white;
+      text-align: center;
+      font-family: var(--ddd-font-navigation);
     }
   </style>
-  <title>my-element</title>
+  <title>Photo Gallery Project - Check-in 1</title>
 </head>
 
 <body>
   <div id="demo">
-    <h1>my-element</h1>
-    <!-- this is going to do whatever the tag's defaults are -->
-    <h2>Default</h2>
-    <my-element></my-element>
-    <h2>Slot usage</h2>
-    <my-element data-accent="2" data-primary="17"><div>Sample slot content</div></my-element>
-    <h2>Property usage</h2>
-    <my-element id="example" title="Sample property title"></my-element>
+    <photo-gallery-project></photo-gallery-project>
   </div>
-  <script type="module" src="./my-element.js"></script>
+  <script type="module" src="./photo-gallery-project.js"></script>
 
   <!-- Take HAX, the Web and you further down the rabbit hole -->
   <style>
@@ -89,8 +78,8 @@
       </p>
       <p>
         You can edit the current page by modifying <code>index.html</code><br />
-        To edit your <strong>my-element</strong> tag, modify <code>src/my-element.js</code>.
-        This file contains all the HTML, CSS and JavaScript used to render your elements above!
+        To edit your <strong>photo-gallery-project</strong> tag, modify <code>photo-gallery-project.js</code>.
+        This file contains all the HTML, CSS and JavaScript used to render the gallery above!
       </p>
       <p>
         Web components are easy to follow once you get used to their pattern.

@@ -1,7 +1,7 @@
 {
-    "name": "my-element",
+    "name": "photo-gallery-project",
     "version": "0.0.0",
-    "description": "Webcomponent my-element following hax / open-wc recommendations",
+    "description": "Photo gallery web component for Check-in 1 - loads images from randomfox.ca API",
     "license": "Apache-2.0",
     "author": {
       "name": "Junyu Zhao"
@@ -16,8 +16,8 @@
       "url": ""
     },
     "type": "module",
-    "main": "my-element.js",
-    "module": "my-element.js",
+    "main": "photo-gallery-project.js",
+    "module": "photo-gallery-project.js",
     "scripts": {
       "start": "web-dev-server",
       "build": "rimraf public && rollup -c rollup.config.js && npm run analyze",
