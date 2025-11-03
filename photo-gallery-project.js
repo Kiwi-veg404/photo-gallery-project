@@ -315,7 +315,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
       id: `card-${Date.now()}`,
       title: 'New Card',
       description: 'Add your description here',
-      imageUrl: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
+      imageUrl: 'https://th.bing.com/th/id/R.e0c32eb12ced8c98cf618374abfef127?rik=8t9Nupra1%2fMwYg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-bsfgb5NGczQ%2fT8JiudTvBGI%2fAAAAAAAAGRY%2fOYzZ0ZS4mwQ%2fs1600%2fBaby-Kiwi-Bird.jpg&ehk=0jRwTzSc4i81BIvs644RBDtC%2fGGRd2Yge3CxKtsNaBE%3d&risl=&pid=ImgRaw&r=0',
     };
     this.editableCards = [...this.editableCards, newCard];
     this.saveToLocalStorage();
@@ -379,6 +379,10 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
         <div class="card-content">
           <h3>${card.title}</h3>
           <p>${card.description}</p>
+        </div>
+        <div class="card-actions">
+          <button>(❤ ω ❤)</button>
+          <button>(> v <)👍</button>
         </div>
         <div class="card-actions">
           <button @click="${() => this.startEditing(card.id)}">Edit</button>
