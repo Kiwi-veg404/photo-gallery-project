@@ -116,7 +116,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       .fox-card p {
         margin-top: var(--ddd-spacing-2);
-        color: var(--ddd-theme-default-limestoneMaxLight);
+        color: var(--ddd-theme-primary-coalMiner);
         font-size: var(--ddd-font-size-xs);
         text-align: center;
       }
@@ -145,24 +145,24 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       @media (prefers-color-scheme: dark) {
         .fox-card {
-          background-color: var(--ddd-theme-default-coalMiner);
+          background-color: var(--ddd-theme-primary-coalMiner);
         }
         .gallery-header h1 {
-          color: var(--ddd-theme-default-white);
+          color: var(--ddd-theme-primary);
         }
         .fox-card p {
-          color: var(--ddd-theme-default-white);
+          color: var(--ddd-theme-primary);
         }
       }
 
       .section-divider {
         margin: var(--ddd-spacing-12) 0;
-        border-top: 2px solid var(--ddd-theme-default-limestoneLight);
+        border-top: 2px solid var(--ddd-theme-primary);
       }
 
       .editable-card {
         position: relative;
-        background-color: var(--ddd-theme-default-white);
+        background-color: var(--ddd-theme-primary-coalMiner);
         border-radius: var(--ddd-radius-md);
         padding: var(--ddd-spacing-4);
         box-shadow: var(--ddd-boxShadow-md);
@@ -205,13 +205,13 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       .card-content h3 {
         margin: 0 0 var(--ddd-spacing-2) 0;
-        color: var(--ddd-theme-default-limestoneMaxLight);
+        color: var(--ddd-theme-default-white);
         font-size: var(--ddd-font-size-m);
       }
 
       .card-content p {
         margin: 0;
-        color: var(--ddd-theme-default-limestoneMaxLight);
+        color: var(--ddd-theme-default-white);
         font-size: var(--ddd-font-size-xs);
         line-height: 1.5;
       }
@@ -242,13 +242,13 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
         }
         .editable-card input,
         .editable-card textarea {
-          background-color: var(--ddd-theme-default-limestoneMaxLight);
+          background-color: var(--ddd-theme-primary-limestoneMaxLight);
           color: var(--ddd-theme-default-white);
-          border-color: var(--ddd-theme-default-slateGray);
+          border-color: var(--ddd-theme-default-coalMiner);
         }
         .card-content h3,
         .card-content p {
-          color: var(--ddd-theme-default-white);
+          color: var(--ddd-theme-primary-white);
         }
       }
     `];
