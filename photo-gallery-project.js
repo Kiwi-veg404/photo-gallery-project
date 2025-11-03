@@ -22,6 +22,8 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
     this.foxImages = [];
     this.loading = false;
     this.error = null;
+    this.editableCards = this.loadFromLocalStorage();
+    this.editingCardId = null;
   }
 
   // Lit reactive properties
@@ -31,6 +33,8 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
       foxImages: { type: Array },
       loading: { type: Boolean },
       error: { type: String },
+      editableCards: { type: Array },
+      editingCardId: { type: String },
     };
   }
 
@@ -150,6 +154,103 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
           color: var(--ddd-theme-default-white);
         }
       }
+
+      .section-divider {
+        margin: var(--ddd-spacing-12) 0;
+        border-top: 2px solid var(--ddd-theme-default-limestoneLight);
+      }
+
+      .editable-card {
+        position: relative;
+        background-color: var(--ddd-theme-default-white);
+        border-radius: var(--ddd-radius-md);
+        padding: var(--ddd-spacing-4);
+        box-shadow: var(--ddd-boxShadow-md);
+        transition: transform 0.3s ease;
+      }
+
+      .editable-card:hover {
+        transform: translateY(-4px);
+      }
+
+      .editable-card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: var(--ddd-radius-sm);
+        margin-bottom: var(--ddd-spacing-2);
+      }
+
+      .editable-card input {
+        width: 100%;
+        padding: var(--ddd-spacing-2);
+        margin-bottom: var(--ddd-spacing-2);
+        border: 1px solid var(--ddd-theme-default-limestoneLight);
+        border-radius: var(--ddd-radius-sm);
+        font-family: var(--ddd-font-navigation);
+        font-size: var(--ddd-font-size-xs);
+      }
+
+      .editable-card textarea {
+        width: 100%;
+        padding: var(--ddd-spacing-2);
+        margin-bottom: var(--ddd-spacing-2);
+        border: 1px solid var(--ddd-theme-default-limestoneLight);
+        border-radius: var(--ddd-radius-sm);
+        font-family: var(--ddd-font-navigation);
+        font-size: var(--ddd-font-size-xs);
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      .card-content h3 {
+        margin: 0 0 var(--ddd-spacing-2) 0;
+        color: var(--ddd-theme-default-limestoneMaxLight);
+        font-size: var(--ddd-font-size-m);
+      }
+
+      .card-content p {
+        margin: 0;
+        color: var(--ddd-theme-default-limestoneMaxLight);
+        font-size: var(--ddd-font-size-xs);
+        line-height: 1.5;
+      }
+
+      .card-actions {
+        display: flex;
+        gap: var(--ddd-spacing-2);
+        margin-top: var(--ddd-spacing-3);
+      }
+
+      .card-actions button {
+        flex: 1;
+        padding: var(--ddd-spacing-2) var(--ddd-spacing-3);
+        font-size: var(--ddd-font-size-xs);
+      }
+
+      .delete-btn {
+        background-color: var(--ddd-theme-default-original87Pink);
+      }
+
+      .delete-btn:hover {
+        background-color: var(--ddd-theme-default-error);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .editable-card {
+          background-color: var(--ddd-theme-default-coalMiner);
+        }
+        .editable-card input,
+        .editable-card textarea {
+          background-color: var(--ddd-theme-default-limestoneMaxLight);
+          color: var(--ddd-theme-default-white);
+          border-color: var(--ddd-theme-default-slateGray);
+        }
+        .card-content h3,
+        .card-content p {
+          color: var(--ddd-theme-default-white);
+        }
+      }
     `];
   }
 
@@ -200,37 +301,124 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
     this.error = null;
   }
 
+  loadFromLocalStorage() {
+    const saved = localStorage.getItem('editableCards');
+    return saved ? JSON.parse(saved) : [];
+  }
+
+  saveToLocalStorage() {
+    localStorage.setItem('editableCards', JSON.stringify(this.editableCards));
+  }
+
+  addNewCard() {
+    const newCard = {
+      id: `card-${Date.now()}`,
+      title: 'New Card',
+      description: 'Add your description here',
+      imageUrl: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
+    };
+    this.editableCards = [...this.editableCards, newCard];
+    this.saveToLocalStorage();
+  }
+
+  startEditing(cardId) {
+    this.editingCardId = cardId;
+  }
+
+  saveCard(cardId) {
+    this.editingCardId = null;
+    this.saveToLocalStorage();
+  }
+
+  deleteCard(cardId) {
+    this.editableCards = this.editableCards.filter(card => card.id !== cardId);
+    this.saveToLocalStorage();
+  }
+
+  updateCardField(cardId, field, value) {
+    this.editableCards = this.editableCards.map(card =>
+      card.id === cardId ? { ...card, [field]: value } : card
+    );
+  }
+
+  renderEditableCard(card) {
+    const isEditing = this.editingCardId === card.id;
+
+    if (isEditing) {
+      return html`
+        <div class="editable-card">
+          <input
+            type="text"
+            .value="${card.title}"
+            @input="${(e) => this.updateCardField(card.id, 'title', e.target.value)}"
+            placeholder="Card Title"
+          />
+          <input
+            type="text"
+            .value="${card.imageUrl}"
+            @input="${(e) => this.updateCardField(card.id, 'imageUrl', e.target.value)}"
+            placeholder="Image URL"
+          />
+          <img src="${card.imageUrl}" alt="${card.title}" loading="lazy" />
+          <textarea
+            .value="${card.description}"
+            @input="${(e) => this.updateCardField(card.id, 'description', e.target.value)}"
+            placeholder="Card Description"
+          ></textarea>
+          <div class="card-actions">
+            <button @click="${() => this.saveCard(card.id)}">Save</button>
+            <button class="delete-btn" @click="${() => this.deleteCard(card.id)}">Delete</button>
+          </div>
+        </div>
+      `;
+    }
+
+    return html`
+      <div class="editable-card">
+        <img src="${card.imageUrl}" alt="${card.title}" loading="lazy" />
+        <div class="card-content">
+          <h3>${card.title}</h3>
+          <p>${card.description}</p>
+        </div>
+        <div class="card-actions">
+          <button @click="${() => this.startEditing(card.id)}">Edit</button>
+          <button class="delete-btn" @click="${() => this.deleteCard(card.id)}">Delete</button>
+        </div>
+      </div>
+    `;
+  }
+
   // Lit render the HTML
   render() {
     return html`
       <div class="gallery-header">
-        <h1>🦊 Random Fox Gallery</h1>
+        <h1>Random Fox Gallery</h1>
       </div>
 
       <div class="controls">
-        <button 
-          @click="${() => this.loadFoxes(1)}" 
+        <button
+          @click="${() => this.loadFoxes(1)}"
           ?disabled="${this.loading}">
           Load 1 Fox
         </button>
-        <button 
-          @click="${() => this.loadFoxes(5)}" 
+        <button
+          @click="${() => this.loadFoxes(5)}"
           ?disabled="${this.loading}">
           Load 5 Foxes
         </button>
-        <button 
-          @click="${() => this.loadFoxes(10)}" 
+        <button
+          @click="${() => this.loadFoxes(10)}"
           ?disabled="${this.loading}">
           Load 10 Foxes
         </button>
-        <button 
-          @click="${() => this.clearGallery()}" 
+        <button
+          @click="${() => this.clearGallery()}"
           ?disabled="${this.loading || this.foxImages.length === 0}">
           Clear Gallery
         </button>
       </div>
 
-      ${this.loading ? html`<div class="loading">Loading foxes... 🦊</div>` : ''}
+      ${this.loading ? html`<div class="loading">Loading foxes...</div>` : ''}
       ${this.error ? html`<div class="error">${this.error}</div>` : ''}
 
       <div class="gallery-grid">
@@ -240,6 +428,22 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
             <p>Fox #${index + 1}</p>
           </div>
         `)}
+      </div>
+
+      <div class="section-divider"></div>
+
+      <div class="gallery-header">
+        <h1>Editable Card Gallery</h1>
+      </div>
+
+      <div class="controls">
+        <button @click="${() => this.addNewCard()}">
+          Add New Card
+        </button>
+      </div>
+
+      <div class="gallery-grid">
+        ${this.editableCards.map(card => this.renderEditableCard(card))}
       </div>
     `;
   }
