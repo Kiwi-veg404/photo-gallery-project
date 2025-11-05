@@ -410,8 +410,8 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
         </div>
         <div class="card-actions">
           <button @click="${(e) => this.love(e)}">(♥ω♥)</button>
-          <button @click="${(e) => this.good(e)}">(> v <)👍</button>
-          <button @click="${(e) => this.hate(e)}">(> n <)👎</button>
+          <button @click="${(e) => this.good(e)}">👍</button>
+          <button @click="${(e) => this.hate(e)}">👎</button>
           <button @click="${(e) => this.return(e)}">⇤</button>
         </div>
         <div class="card-actions">
