@@ -96,7 +96,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
       }
 
       .fox-card {
-        background-color: var(--ddd-theme-default-white);
+        background-color: var(--ddd-theme-default-pughBlue);
         border-radius: var(--ddd-radius-md);
         padding: var(--ddd-spacing-4);
         box-shadow: var(--ddd-boxShadow-md);
@@ -145,7 +145,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       @media (prefers-color-scheme: dark) {
         .fox-card {
-          background-color: var(--ddd-theme-primary-coalMiner);
+          background-color: var(--ddd-theme-default-skyBlue);
         }
         .gallery-header h1 {
           color: var(--ddd-theme-primary);
@@ -162,7 +162,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       .editable-card {
         position: relative;
-        background-color: var(--ddd-theme-primary-coalMiner);
+        background-color: var(--ddd-theme-default-pughBlue);
         border-radius: var(--ddd-radius-md);
         padding: var(--ddd-spacing-4);
         box-shadow: var(--ddd-boxShadow-md);
@@ -238,7 +238,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
       @media (prefers-color-scheme: dark) {
         .editable-card {
-          background-color: var(--ddd-theme-default-coalMiner);
+          background-color: var(--ddd-theme-default-skyBlue);
         }
         .editable-card input,
         .editable-card textarea {
@@ -341,6 +341,34 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
     );
   }
 
+  /**
+   * People reactions
+   */
+  love(e) {
+    const card = e.target.closest('.editable-card');
+    if (card) {
+      card.style.backgroundColor = "var(--ddd-theme-default-futureLime)";
+    }
+  }
+  good(e) {
+    const card = e.target.closest('.editable-card');
+    if (card) {
+      card.style.backgroundColor = "var(--ddd-theme-default-keystoneYellow)";
+    }
+  }
+  hate(e) {
+    const card = e.target.closest('.editable-card');
+    if (card) {
+      card.style.backgroundColor = "var(--ddd-theme-default-original87Pink)";
+    }
+  }
+  return(e) {
+    const card = e.target.closest('.editable-card');
+    if (card) {
+      card.style.backgroundColor = '';
+    }
+  }
+
   renderEditableCard(card) {
     const isEditing = this.editingCardId === card.id;
 
@@ -381,8 +409,10 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
           <p>${card.description}</p>
         </div>
         <div class="card-actions">
-          <button>(❤ ω ❤)</button>
-          <button>(> v <)👍</button>
+          <button @click="${(e) => this.love(e)}">(♥ω♥)</button>
+          <button @click="${(e) => this.good(e)}">(> v <)👍</button>
+          <button @click="${(e) => this.hate(e)}">(> n <)👎</button>
+          <button @click="${(e) => this.return(e)}">⇤</button>
         </div>
         <div class="card-actions">
           <button @click="${() => this.startEditing(card.id)}">Edit</button>
