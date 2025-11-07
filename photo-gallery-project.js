@@ -316,6 +316,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
       title: 'New Card',
       description: 'Add your description here',
       imageUrl: 'https://th.bing.com/th/id/R.e0c32eb12ced8c98cf618374abfef127?rik=8t9Nupra1%2fMwYg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-bsfgb5NGczQ%2fT8JiudTvBGI%2fAAAAAAAAGRY%2fOYzZ0ZS4mwQ%2fs1600%2fBaby-Kiwi-Bird.jpg&ehk=0jRwTzSc4i81BIvs644RBDtC%2fGGRd2Yge3CxKtsNaBE%3d&risl=&pid=ImgRaw&r=0',
+      backgroundColor: ''
     };
     this.editableCards = [...this.editableCards, newCard];
     this.saveToLocalStorage();
@@ -339,6 +340,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
     this.editableCards = this.editableCards.map(card =>
       card.id === cardId ? { ...card, [field]: value } : card
     );
+    this.saveToLocalStorage();
   }
 
   /**
@@ -347,26 +349,44 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
   love(e) {
     const card = e.target.closest('.editable-card');
     if (card) {
-      card.style.backgroundColor = "var(--ddd-theme-default-futureLime)";
+      const cardId = card.dataset.id;
+      const newColor = "var(--ddd-theme-default-futureLime)";
+      card.style.backgroundColor = newColor;
+      this.updateCardField(cardId, 'backgroundColor', newColor);
     }
   }
   good(e) {
     const card = e.target.closest('.editable-card');
     if (card) {
-      card.style.backgroundColor = "var(--ddd-theme-default-keystoneYellow)";
+      const cardId = card.dataset.id;
+      const newColor = "var(--ddd-theme-default-keystoneYellow)";
+      card.style.backgroundColor = newColor;
+      this.updateCardField(cardId, 'backgroundColor', newColor);
     }
   }
   hate(e) {
     const card = e.target.closest('.editable-card');
     if (card) {
-      card.style.backgroundColor = "var(--ddd-theme-default-original87Pink)";
+      const cardId = card.dataset.id;
+      const newColor = "var(--ddd-theme-default-original87Pink)";
+      card.style.backgroundColor = newColor;
+      this.updateCardField(cardId, 'backgroundColor', newColor);
     }
   }
   return(e) {
     const card = e.target.closest('.editable-card');
     if (card) {
-      card.style.backgroundColor = '';
+      const cardId = card.dataset.id;
+      const newColor = "";
+      card.style.backgroundColor = newColor;
+      this.updateCardField(cardId, 'backgroundColor', newColor);
     }
+  }
+  shareCard(e) {
+    const shareUrl = window.location.href; 
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      alert('You successfully copied the website address!');
+    })
   }
 
   renderEditableCard(card) {
@@ -374,7 +394,9 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
 
     if (isEditing) {
       return html`
-        <div class="editable-card">
+        <div class="editable-card"
+            data-id="${card.id}"
+            style="${card.backgroundColor ? `background-color: ${card.backgroundColor}` : ''}">
           <input
             type="text"
             .value="${card.title}"
@@ -402,7 +424,9 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
     }
 
     return html`
-      <div class="editable-card">
+      <div class="editable-card"
+          data-id="${card.id}"
+          style="${card.backgroundColor ? `background-color: ${card.backgroundColor}` : ''}">
         <img src="${card.imageUrl}" alt="${card.title}" loading="lazy" />
         <div class="card-content">
           <h3>${card.title}</h3>
@@ -416,6 +440,7 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
         </div>
         <div class="card-actions">
           <button @click="${() => this.startEditing(card.id)}">Edit</button>
+          <button @click="${(e) => this.shareCard(e)}">Share</button>
           <button class="delete-btn" @click="${() => this.deleteCard(card.id)}">Delete</button>
         </div>
       </div>
