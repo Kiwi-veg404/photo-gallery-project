@@ -311,11 +311,12 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
   }
 
   addNewCard() {
+    const randomId = Math.floor(Math.random() * 123) + 1;
     const newCard = {
       id: `card-${Date.now()}`,
       title: 'New Card',
       description: 'Add your description here',
-      imageUrl: 'https://th.bing.com/th/id/R.e0c32eb12ced8c98cf618374abfef127?rik=8t9Nupra1%2fMwYg&riu=http%3a%2f%2f2.bp.blogspot.com%2f-bsfgb5NGczQ%2fT8JiudTvBGI%2fAAAAAAAAGRY%2fOYzZ0ZS4mwQ%2fs1600%2fBaby-Kiwi-Bird.jpg&ehk=0jRwTzSc4i81BIvs644RBDtC%2fGGRd2Yge3CxKtsNaBE%3d&risl=&pid=ImgRaw&r=0',
+      imageUrl: `https://randomfox.ca/images/${randomId}.jpg`,
       backgroundColor: ''
     };
     this.editableCards = [...this.editableCards, newCard];
@@ -496,8 +497,8 @@ export class PhotoGalleryProject extends DDDSuper(LitElement) {
       </div>
 
       <div class="controls">
-        <button @click="${() => this.addNewCard()}">
-          Add New Card
+        <button @click="${() => this.addNewCard()}" ?disabled="${this.loading}">
+          ${this.loading ? 'Adding Card...' : 'Add New Card'}
         </button>
       </div>
 
